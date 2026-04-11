@@ -1,0 +1,50 @@
+- How Lock is Acquired — Step by Step
+When a thread hits synchronized (sharedCounter):
+
+Thread hits synchronized block
+        │
+        ▼
+JVM checks: is the monitor on sharedCounter FREE?
+        │
+   ┌────┴────┐
+  YES        NO
+   │          │
+   ▼          ▼
+Thread      Thread goes into
+ACQUIRES    BLOCKED state
+the lock    (OS suspends it)
+   │          │
+   ▼          └──► waits until lock is FREE
+Executes         then competes again
+the block
+   │
+   ▼
+Lock RELEASED automatically
+when block exits
+
+- What Happens to the Blocked Thread
+  When Thread1 holds the lock and Thread2 is blocked:
+
+Thread2 state machine:
+
+RUNNABLE ──► hits synchronized ──► lock taken ──► BLOCKED
+                                                      │
+                                          OS suspends Thread2
+                                          (not using CPU at all)
+                                                      │
+                                          Thread1 exits block
+                                          MONITOREXIT fires
+                                                      │
+                                          JVM notifies OS
+                                          Thread2 becomes RUNNABLE
+                                                      │
+                                          Thread2 competes for lock again
+                                          (if no other thread grabs it first)
+                                                      │
+                                          Thread2 ACQUIRES lock ──► executes
+
+- Every object has a built-in monitor lock — we don't create it
+- synchronized block → compiler inserts MONITORENTER / MONITOREXIT bytecode
+- Lock is always auto-released when the block exits (normal or exception)
+- Blocked thread is managed by OS + JVM — woken up automatically when lock is free
+- notify/wait is only needed when a thread must pause for a business condition, not just for mutual exclusion

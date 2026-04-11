@@ -2,7 +2,7 @@ package OddEvenPrinter;
 
 public class SharedClass
 {
-    int MAX_LIMIT;
+    private int MAX_LIMIT;
     int currentNumber = 1;
 
     public SharedClass(int MAX_LIMIT)
