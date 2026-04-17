@@ -49,7 +49,7 @@ public class TrafficSignalController
     }
 }
 //____________________________________________________________________________________________________
-// Using Reentrant Locks:
+// Using ReentrantLocks:
 
 //    ReentrantLock lock = new ReentrantLock();
 //    Condition northCondition = lock.newCondition();

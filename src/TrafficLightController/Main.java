@@ -42,6 +42,8 @@ public class Main
 }
 
 
+
+
 //    Thread thread1 = new Thread(() -> {
 //        try {
 //            trafficSignalController.signal(Direction.NORTH);
