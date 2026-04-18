@@ -1,0 +1,8 @@
+- The while loop around wait() is essential — when a thread is woken up by notifyAll(), it re-checks
+  the condition before proceeding. This is the classic guarded wait pattern to protect against spurious wakeups.
+  Using while means every woken-up thread re-evaluates the condition, making the program robust against this. This is the canonical Java concurrency pattern,
+  and your code follows it correctly.
+
+- The termination condition is equally important. When currentNumber > MAX_LIMIT, the thread calls notifyAll()
+  (to wake up any threads stuck in wait()) and breaks out of the infinite loop.
+   Without the notifyAll() here, the other two threads would sleep forever — a classic deadlock scenario.

@@ -8,7 +8,7 @@ public class Main
         int totalThreads = 3;
         for(int i = 0; i < totalThreads; i++)
         {
-            Thread thread = new Thread(new Printer(sharedNumberClass, totalThreads, i), "Thread - " + i);
+            Thread thread = new Thread(new Printer(sharedNumberClass, totalThreads, i));
             thread.start();
         }
     }

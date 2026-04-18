@@ -2,7 +2,6 @@ package PrintUsingNThreads;
 
 public class Printer implements Runnable
 {
-
     final SharedNumberClass sharedNumberClass;
     int totalThreads;
     int threadNumber;
