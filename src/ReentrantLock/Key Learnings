@@ -1,0 +1,3 @@
+-  unlock() inside innerMethod() only decrements the count to 1. The lock is not released to other threads yet.
+It only becomes truly free when outerMethod() calls its own unlock() and count hits 0.
+Each lock() must be paired with exactly one unlock().
