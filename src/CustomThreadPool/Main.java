@@ -1,4 +1,4 @@
-package CustomPool;
+package CustomThreadPool;
 
 public class Main
 {

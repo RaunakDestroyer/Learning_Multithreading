@@ -1,0 +1,4 @@
+- Introduced in Java 8, this pool uses the fork-join framework and is based on a work-stealing algorithm
+- Each processor core has its own queue. If one core finishes its tasks and becomes idle,
+  it "steals" tasks from the queues of other busy cores to maximize CPU utilization
+- By default, it maintains a number of threads equal to the number of processor cores available in the system

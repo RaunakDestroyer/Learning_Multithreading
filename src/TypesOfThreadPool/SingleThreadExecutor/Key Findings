@@ -1,0 +1,4 @@
+- This pool uses only a single worker thread to execute tasks
+- It guarantees that tasks are executed sequentially in the exact order they were submitted
+- Unlike a fixed thread pool with one thread, if this single worker thread terminates unexpectedly due to a failure,
+  the system automatically creates a new thread to replace it and continue the queue

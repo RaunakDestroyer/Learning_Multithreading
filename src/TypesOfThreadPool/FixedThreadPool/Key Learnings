@@ -1,0 +1,4 @@
+- This pool maintains a fixed number of threads.
+- Tasks are picked up one by one by the available threads.If the number of tasks exceeds the number of threads,
+  the extra tasks are held in an unbounded queue until a thread becomes free.
+- Threads in this pool are never destroyed unless the pool is explicitly shut down.

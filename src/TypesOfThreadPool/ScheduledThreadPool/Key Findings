@@ -1,0 +1,11 @@
+- A specialized pool used for timing-related tasks, such as running background maintenance or recurring events
+
+- Methods of Execution:
+schedule: Runs a task once after a specific delay
+
+scheduleAtFixedRate: Executes tasks repeatedly based on the start time of the previous execution
+                     (e.g., every 10 minutes regardless of how long the task takes, unless the task duration
+                     exceeds the interval)
+
+scheduleWithFixedDelay: Executes tasks repeatedly with a fixed delay measured from the completion time of the
+                        previous execution

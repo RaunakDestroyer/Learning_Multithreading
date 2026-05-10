@@ -1,0 +1,8 @@
+- An unbounded pool that dynamically adjusts its size based on demand
+- It starts with a small number of threads (often just one) and creates new threads if all existing ones
+  are busy when a new task arrives
+- If a thread remains idle for a specified time (usually 60 seconds), it is terminated and removed from
+  the pool to save resources
+- There is no waiting queue. Unlike a FixedThreadPool where tasks queue up and wait for a free thread,
+  a CachedThreadPool either finds an idle thread immediately or spawns a brand new one.
+  That's why it scales instantly under burst load.
