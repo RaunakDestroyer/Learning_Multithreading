@@ -25,4 +25,11 @@ public class MyThreadPool
     {
         taskQueue.offer(task);
     }
+    public void shutdown()
+    {
+        for(Worker worker : workers)
+        {
+            worker.interrupt();  // sends InterruptedException to each worker blocked on take()
+        }
+    }
 }

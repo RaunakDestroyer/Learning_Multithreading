@@ -1,0 +1,61 @@
+1. newSingleThreadExecutor & newFixedThreadPool(n)
+
+Executors.newFixedThreadPool(4);
+// corePoolSize = 4, maxPoolSize = 4
+
+Strategy: Lazy, but only up to corePoolSize
+execute(T1) → Thread-1 created
+execute(T2) → Thread-2 created
+execute(T3) → Thread-3 created
+execute(T4) → Thread-4 created
+execute(T5) → all 4 threads busy → T5 goes into queue, NO new thread
+execute(T6) → T6 goes into queue, NO new thread
+
+- Threads are created one per task until corePoolSize is reached
+- After that, queue fills up, threads are never destroyed (they live forever waiting)
+
+2. newCachedThreadPool
+
+Executors.newCachedThreadPool();
+// corePoolSize = 0, maxPoolSize = Integer.MAX_VALUE, queue = SynchronousQueue
+
+Strategy: Create a new thread for EVERY task if no idle thread exists
+execute(T1) → Thread-1 created (no idle thread available)
+execute(T2) → Thread-2 created (Thread-1 is busy)
+execute(T3) → Thread-3 created (all busy)
+// ... 1 minute later, all tasks done
+execute(T4) → Thread-1 reused (was idle, not yet expired)
+
+- Uses a SynchronousQueue — zero capacity, tasks are handed off directly to a thread
+- Idle threads are destroyed after 60 seconds — pool shrinks back to 0
+- Can spin up unlimited threads — dangerous under high load (OutOfMemoryError)
+
+3. newScheduledThreadPool(n)
+
+Executors.newScheduledThreadPool(2);
+// corePoolSize = n, maxPoolSize = Integer.MAX_VALUE, queue = DelayedWorkQueue
+
+Strategy: Same lazy creation as Fixed, but uses a priority queue sorted by execution time
+schedule(T1, delay=5s) → goes into DelayedWorkQueue
+schedule(T2, delay=2s) → goes into DelayedWorkQueue
+// T2 runs first because it has shorter delay
+
+- Thread creation is same as Fixed — lazy up to corePoolSize
+- The difference is the queue is a min-heap sorted by scheduled time, not FIFO
+- A thread sleeps inside the queue until the next task's delay expires
+
+4. newWorkStealingPool
+
+Executors.newWorkStealingPool();
+// Uses ForkJoinPool internally, NOT ThreadPoolExecutor
+
+Strategy: Completely different — creates ALL threads upfront
+// Default: parallelism = Runtime.getRuntime().availableProcessors()
+// e.g., on an 8-core machine → 8 threads created immediately at pool creation
+
+- This is the only pool that creates threads eagerly (not lazily)
+- Each thread has its own deque (double-ended queue) of tasks
+- If Thread-1 finishes its tasks, it steals from the tail of Thread-2's deque
+- Uses daemon threads — JVM can exit even if tasks are pending (unlike all others)
+
+

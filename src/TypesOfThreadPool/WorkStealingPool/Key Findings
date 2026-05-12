@@ -1,4 +1,12 @@
 - Introduced in Java 8, this pool uses the fork-join framework and is based on a work-stealing algorithm
 - Each processor core has its own queue. If one core finishes its tasks and becomes idle,
   it "steals" tasks from the queues of other busy cores to maximize CPU utilization
-- By default, it maintains a number of threads equal to the number of processor cores available in the system
+- By default, it maintains a number of threads equal to the number of processor cores available in the system.
+
+submit() vs execute():
+
+- execute(Runnable) — fire and forget, returns void
+- submit(Runnable) — returns a Future<?>, lets you check for exceptions or cancellation later
+
+The Future is discarded here, but submit is still preferred because unchecked exceptions inside execute()
+can silently kill the worker thread, whereas submit() wraps them in the Future.

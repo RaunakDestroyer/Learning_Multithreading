@@ -22,8 +22,8 @@ public class Main
                 }
             });
         }
-        executor.awaitTermination(2, TimeUnit.SECONDS);
         executor.shutdown();
-        System.out.println("\nAll taskd finished or pool shut down. ");
+        executor.awaitTermination(2, TimeUnit.SECONDS);
+        System.out.println("\nAll tasks finished or pool shut down. ");
     }
 }
